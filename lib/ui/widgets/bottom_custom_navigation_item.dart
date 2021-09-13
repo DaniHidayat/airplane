@@ -10,7 +10,7 @@ class BottomCustomNagivationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   Column(
+    return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(),

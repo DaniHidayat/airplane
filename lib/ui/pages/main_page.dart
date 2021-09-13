@@ -21,7 +21,8 @@ class MainPage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: 60,
-          margin: EdgeInsets.only(bottom:30,
+          margin: EdgeInsets.only(
+            bottom:30,
            left: defaultMargin,
            right: defaultMargin
            ),
