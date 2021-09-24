@@ -43,7 +43,7 @@ class SignUpPage extends StatelessWidget {
       Widget hobbyInput(){
          return CustomTextFormField(
           title: 'Hobby',
-          hintText: 'Your ',
+          hintText: 'Your hobby',
         );
       }
      Widget submitButton(){
