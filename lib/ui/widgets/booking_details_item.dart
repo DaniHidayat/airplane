@@ -1,40 +1,52 @@
 import 'package:airplane/shared/theme.dart';
 import 'package:flutter/material.dart';
-class BookingDetailsItem extends StatelessWidget {
 
+class BookingDetailsItem extends StatelessWidget {
   final String title;
   final String valueText;
-  final  valueColor;
-  
-  const BookingDetailsItem({ Key? key,  required this.title, required this.valueText, required this.valueColor }) : super(key: key);
+  final Color valueColor;
+
+  const BookingDetailsItem({
+    Key? key,
+    required this.title,
+    required this.valueText,
+    required this.valueColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin:EdgeInsets.only(top:16),
-      child:Row(
-        children:[
+      margin: EdgeInsets.only(
+        top: 16,
+      ),
+      child: Row(
+        children: [
           Container(
-            width:16,
-            height:16,
+            width: 16,
+            height: 16,
             margin: EdgeInsets.only(right: 6),
-             decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image:  AssetImage('assets/icon_check2.png'),
-                    ),
-                  ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/icon_check.png',
+                ),
+              ),
+            ),
           ),
-          Text(title ,style:blackTextStyle,),
+          Text(
+            title,
+            style: blackTextStyle,
+          ),
           Spacer(),
-
-           Text(valueText,style:blackTextStyle.copyWith(
-             fontWeight: semiBold,
-             color: valueColor,
-             ),
-             ),
-        ]
-      )
-
-      );
+          Text(
+            valueText,
+            style: blackTextStyle.copyWith(
+              fontWeight: semiBold,
+              color: valueColor,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
