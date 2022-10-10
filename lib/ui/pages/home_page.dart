@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:airplane/cubit/auth_cubit.dart';
 import 'package:airplane/cubit/destination_cubit.dart';
 import 'package:airplane/models/destination_model.dart';
 import 'package:airplane/shared/theme.dart';
 import 'package:airplane/ui/widgets/destination_card.dart';
+import 'package:airplane/ui/widgets/destination_card_skelaton.dart';
 import 'package:airplane/ui/widgets/destination_tile.dart';
+import 'package:airplane/ui/widgets/destination_tile_skelaton.dart';
+import 'package:airplane/ui/widgets/searchText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +21,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController _filter = new TextEditingController();
+  bool showSearch = false;
+  String name = "";
+
   @override
   void initState() {
     context.read<DestinationCubit>().fetchDestinations();
@@ -23,6 +33,75 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget skelatonheader() {
+      return BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSuccess) {
+            return Container(
+              margin: EdgeInsets.only(
+                left: defaultMargin,
+                right: defaultMargin,
+                top: 30,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SkeletonParagraph(
+                            style: SkeletonParagraphStyle(
+                                lines: 2,
+                                spacing: 6,
+                                lineStyle: SkeletonLineStyle(
+                                  randomLength: true,
+                                  height: 15,
+                                  borderRadius: BorderRadius.circular(8),
+                                  minLength:
+                                      MediaQuery.of(context).size.width / 6,
+                                  maxLength:
+                                      MediaQuery.of(context).size.width / 3,
+                                ))),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: [
+                            SkeletonParagraph(
+                                style: SkeletonParagraphStyle(
+                                    lines: 1,
+                                    spacing: 6,
+                                    lineStyle: SkeletonLineStyle(
+                                      randomLength: true,
+                                      height: 10,
+                                      borderRadius: BorderRadius.circular(8),
+                                      minLength:
+                                          MediaQuery.of(context).size.width / 6,
+                                      maxLength:
+                                          MediaQuery.of(context).size.width / 3,
+                                    ))),
+                            SkeletonAvatar(
+                              style: SkeletonAvatarStyle(
+                                borderRadius: BorderRadius.circular(5),
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return SizedBox();
+          }
+        },
+      );
+    }
+
     Widget header() {
       return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
@@ -50,12 +129,27 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: 6,
                         ),
-                        Text(
-                          'Where to fly today?',
-                          style: greyTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: light,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              'Where to fly today?',
+                              style: greyTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: light,
+                              ),
+                            ),
+                            new SizedBox(
+                              width: 32.0,
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showSearch = !showSearch;
+                                  });
+                                },
+                                icon: new Icon(Icons.search, size: 38.0),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -71,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             );
@@ -79,6 +173,21 @@ class _HomePageState extends State<HomePage> {
             return SizedBox();
           }
         },
+      );
+    }
+
+    Widget skelatonpopularDestinations() {
+      return Container(
+        margin: EdgeInsets.only(top: 30),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DestinationCardSkelaton(),
+              DestinationCardSkelaton(),
+            ],
+          ),
+        ),
       );
     }
 
@@ -92,6 +201,38 @@ class _HomePageState extends State<HomePage> {
               return DestinationCard(destination);
             }).toList(),
           ),
+        ),
+      );
+    }
+
+    Widget skeletonNewDestination() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 30,
+          left: defaultMargin,
+          right: defaultMargin,
+          bottom: 100,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SkeletonParagraph(
+                style: SkeletonParagraphStyle(
+                    lines: 1,
+                    spacing: 6,
+                    lineStyle: SkeletonLineStyle(
+                      randomLength: true,
+                      height: 15,
+                      borderRadius: BorderRadius.circular(8),
+                      minLength: MediaQuery.of(context).size.width / 6,
+                      maxLength: MediaQuery.of(context).size.width / 3,
+                    ))),
+            Column(
+              children: [
+                DestinationTileSkelaton(),
+              ],
+            )
+          ],
         ),
       );
     }
@@ -140,14 +281,29 @@ class _HomePageState extends State<HomePage> {
           return ListView(
             children: [
               header(),
+              Card(
+                child: TextField(
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
+                ),
+              ),
               popularDestinations(state.destinations),
-              newDestinations(state.destinations),
+              newDestinations(state.destinations)
             ],
           );
         }
 
         return Center(
-          child: CircularProgressIndicator(),
+          child: Column(children: [
+            skelatonheader(),
+            skelatonpopularDestinations(),
+            skeletonNewDestination(),
+          ]),
         );
       },
     );

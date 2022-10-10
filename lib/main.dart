@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           create: (context) => PageCubit(),
         ),
         BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => AuthCubit(),                                      
         ),
         BlocProvider(
           create: (context) => DestinationCubit(),
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => TransactionCubit(),
-        ),
+        ),                                                                               
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
