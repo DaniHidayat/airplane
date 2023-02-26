@@ -1,3 +1,4 @@
+import 'package:airplane/ad_helper.dart';
 import 'package:airplane/cubit/page_cubit.dart';
 import 'package:airplane/ui/pages/custom_api.dart';
 import 'package:airplane/ui/pages/home_page.dart';
@@ -8,9 +9,44 @@ import 'package:airplane/ui/widgets/custom_bottom_navigation_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  void initState() {
+    initBannerAd();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  late BannerAd bannerAd;
+  bool isAdLoaded = false;
+  initBannerAd() {
+    bannerAd = BannerAd(
+        size: AdSize.largeBanner,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          print("DANI HIDYAT");
+          setState(() {
+            isAdLoaded = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+          print("error");
+        }),
+        request: const AdRequest());
+    bannerAd.load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +60,7 @@ class MainPage extends StatelessWidget {
           return WalletPage();
         case 3:
           return SettingPage();
-          case 4:
+        case 4:
           return CustomApi();
         default:
           return HomePage();
@@ -53,36 +89,49 @@ class MainPage extends StatelessWidget {
                 index: 0,
                 imageUrl: 'assets/icon_home.png',
               ),
-              CustomBottomNavigationItem(
-                index: 1,
-                imageUrl: 'assets/icon_booking.png',
-              ),
-              CustomBottomNavigationItem(
-                index: 2,
-                imageUrl: 'assets/icon_card.png',
-              ),
+              // CustomBottomNavigationItem(
+              //   index: 1,
+              //   imageUrl: 'assets/icon_booking.png',
+              // ),
+              // CustomBottomNavigationItem(
+              //   index: 2,
+              //   imageUrl: 'assets/icon_card.png',
+              // ),
               CustomBottomNavigationItem(
                 index: 3,
                 imageUrl: 'assets/icon_settings.png',
               ),
-               CustomBottomNavigationItem(
-                index: 4,
-                imageUrl: 'assets/icon_settings.png',
-              ),
+              // CustomBottomNavigationItem(
+              //   index: 4,
+              //   imageUrl: 'assets/icon_settings.png',
+              // ),
             ],
           ),
         ),
       );
     }
 
+    Widget ads() {
+      return isAdLoaded
+          ? Container(
+              margin: const EdgeInsets.symmetric(vertical: 30),
+              child: SizedBox(
+                height: bannerAd.size.height.toDouble() + 20,
+                width: bannerAd.size.width.toDouble() + 50,
+                child: AdWidget(ad: bannerAd),
+              ),
+            )
+          : const SizedBox();
+    }
+
     return BlocBuilder<PageCubit, int>(
       builder: (context, currentIndex) {
         return Scaffold(
-          backgroundColor: kBackgroundColor,
           body: Stack(
             children: [
               buildContent(currentIndex),
               customBottomNavigation(),
+              ads(),
             ],
           ),
         );

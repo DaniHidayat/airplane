@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-
 class CheckoutPage extends StatelessWidget {
   final TransactionModel transaction;
 

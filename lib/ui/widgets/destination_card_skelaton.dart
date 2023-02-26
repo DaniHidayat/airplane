@@ -1,6 +1,4 @@
-import 'package:airplane/models/destination_model.dart';
 import 'package:airplane/shared/theme.dart';
-import 'package:airplane/ui/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 

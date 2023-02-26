@@ -13,11 +13,22 @@ import 'package:airplane/ui/pages/success_checkout_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'ui/pages/splash_page.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  var devices = ["B8E636336EA0996FA0EA3A31F8F2A6A5"];
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await MobileAds.instance.initialize();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  RequestConfiguration requestConfiguration =
+      RequestConfiguration(testDeviceIds: devices);
+  MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 
   runApp(MyApp());
 }
@@ -33,7 +44,7 @@ class MyApp extends StatelessWidget {
           create: (context) => PageCubit(),
         ),
         BlocProvider(
-          create: (context) => AuthCubit(),                                      
+          create: (context) => AuthCubit(),
         ),
         BlocProvider(
           create: (context) => DestinationCubit(),
@@ -43,7 +54,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => TransactionCubit(),
-        ),                                                                               
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

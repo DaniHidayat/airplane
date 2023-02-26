@@ -29,6 +29,13 @@
             {
               "client_id": "149484894969-v6csjfaomsm1amoif3k6qcs69trljo91.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "149484894969-0cjqgmdt1h0m0shp79mpgg8ipmdmrktn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.danihdyt.airplane"
+              }
             }
           ]
         }

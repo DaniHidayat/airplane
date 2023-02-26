@@ -7,10 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:airplane/shared/theme.dart';
 import 'package:intl/intl.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final DestinationModel destination;
 
   const DetailPage(this.destination, {Key? key}) : super(key: key);
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  bool _like = false;
+  void like() {
+    setState(() {
+      _like = !_like;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +34,7 @@ class DetailPage extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: NetworkImage(
-              destination.imageUrl,
+              widget.destination.imageUrl,
             ),
           ),
         ),
@@ -81,7 +93,7 @@ class DetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          destination.name,
+                          widget.destination.name,
                           style: whiteTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: semiBold,
@@ -89,7 +101,7 @@ class DetailPage extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          destination.city,
+                          widget.destination.city,
                           style: whiteTextStyle.copyWith(
                             fontSize: 16,
                             fontWeight: light,
@@ -115,7 +127,7 @@ class DetailPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        destination.rating.toString(),
+                        widget.destination.rating.toString(),
                         style: whiteTextStyle.copyWith(
                           fontWeight: medium,
                         ),
@@ -142,13 +154,40 @@ class DetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // NOTE: ABOUT
-                  Text(
-                    'About',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'About',
+                        style: blackTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                      new GestureDetector(
+                        onTap: () {
+                          like();
+                        },
+                        child: new Container(
+                          width: 50,
+                          height: 50,
+                          margin: EdgeInsets.only(
+                            top: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                _like
+                                    ? 'assets/icon_heart_color.png'
+                                    : 'assets/icon_heart.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
+
                   SizedBox(
                     height: 6,
                   ),
@@ -244,7 +283,7 @@ class DetailPage extends StatelessWidget {
                             locale: 'id',
                             symbol: 'IDR ',
                             decimalDigits: 0,
-                          ).format(destination.price),
+                          ).format(widget.destination.price),
                           style: blackTextStyle.copyWith(
                             fontSize: 18,
                             fontWeight: medium,
@@ -270,7 +309,8 @@ class DetailPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChooseSeatPage(destination),
+                          builder: (context) =>
+                              ChooseSeatPage(widget.destination),
                         ),
                       );
                     },

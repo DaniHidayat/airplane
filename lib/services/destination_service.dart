@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DestinationService {
   CollectionReference _destinationReference =
       FirebaseFirestore.instance.collection('destinations');
-
   Future<List<DestinationModel>> fetchDestinations() async {
     try {
       QuerySnapshot result = await _destinationReference.get();

@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:airplane/cubit/auth_cubit.dart';
 import 'package:airplane/cubit/destination_cubit.dart';
 import 'package:airplane/models/destination_model.dart';
 import 'package:airplane/shared/theme.dart';
+import 'package:airplane/ui/pages/search_page.dart';
 import 'package:airplane/ui/widgets/destination_card.dart';
 import 'package:airplane/ui/widgets/destination_card_skelaton.dart';
 import 'package:airplane/ui/widgets/destination_tile.dart';
 import 'package:airplane/ui/widgets/destination_tile_skelaton.dart';
-import 'package:airplane/ui/widgets/searchText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -21,8 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _filter = new TextEditingController();
-  bool showSearch = false;
   String name = "";
 
   @override
@@ -142,9 +138,11 @@ class _HomePageState extends State<HomePage> {
                               width: 32.0,
                               child: IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    showSearch = !showSearch;
-                                  });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SearchPage()),
+                                  );
                                 },
                                 icon: new Icon(Icons.search, size: 38.0),
                               ),
@@ -238,6 +236,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     Widget newDestinations(List<DestinationModel> destinations) {
+     
       return Container(
         margin: EdgeInsets.only(
           top: 30,
@@ -281,17 +280,6 @@ class _HomePageState extends State<HomePage> {
           return ListView(
             children: [
               header(),
-              Card(
-                child: TextField(
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search), hintText: 'Search...'),
-                  onChanged: (val) {
-                    setState(() {
-                      name = val;
-                    });
-                  },
-                ),
-              ),
               popularDestinations(state.destinations),
               newDestinations(state.destinations)
             ],
