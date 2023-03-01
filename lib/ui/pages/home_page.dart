@@ -8,7 +8,6 @@ import 'package:airplane/ui/widgets/destination_card.dart';
 import 'package:airplane/ui/widgets/destination_card_skelaton.dart';
 import 'package:airplane/ui/widgets/destination_tile.dart';
 import 'package:airplane/ui/widgets/destination_tile_skelaton.dart';
-import 'package:airplane/ui/widgets/searchText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -21,10 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _filter = new TextEditingController();
-  bool showSearch = false;
-  String name = "";
-
   @override
   void initState() {
     context.read<DestinationCubit>().fetchDestinations();
@@ -136,17 +131,6 @@ class _HomePageState extends State<HomePage> {
                               style: greyTextStyle.copyWith(
                                 fontSize: 16,
                                 fontWeight: light,
-                              ),
-                            ),
-                            new SizedBox(
-                              width: 32.0,
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    showSearch = !showSearch;
-                                  });
-                                },
-                                icon: new Icon(Icons.search, size: 38.0),
                               ),
                             ),
                           ],
@@ -281,17 +265,6 @@ class _HomePageState extends State<HomePage> {
           return ListView(
             children: [
               header(),
-              Card(
-                child: TextField(
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search), hintText: 'Search...'),
-                  onChanged: (val) {
-                    setState(() {
-                      name = val;
-                    });
-                  },
-                ),
-              ),
               popularDestinations(state.destinations),
               newDestinations(state.destinations)
             ],

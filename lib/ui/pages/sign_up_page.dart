@@ -12,7 +12,8 @@ class SignUpPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController(text: '');
   final TextEditingController passwordController =
       TextEditingController(text: '');
-  final TextEditingController hobbyController = TextEditingController(text: '');
+  final TextEditingController konfirmasiController =
+      TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +56,12 @@ class SignUpPage extends StatelessWidget {
         );
       }
 
-      Widget hobbyInput() {
+      Widget konfirmasiPasswordInput() {
         return CustomTextFormField(
-          title: 'Hobby',
-          hintText: 'Your hobby',
-          controller: hobbyController,
+          title: 'Konfirmasi Password',
+          hintText: 'Konfirmasi Password',
+          obscureText: true,
+          controller: konfirmasiController,
         );
       }
 
@@ -92,7 +94,7 @@ class SignUpPage extends StatelessWidget {
                     email: emailController.text,
                     password: passwordController.text,
                     name: nameController.text,
-                    hobby: hobbyController.text);
+                    konfirmasiPassword: konfirmasiController.text);
               },
             );
           },
@@ -116,7 +118,7 @@ class SignUpPage extends StatelessWidget {
             nameInput(),
             emailInput(),
             passwordInput(),
-            hobbyInput(),
+            konfirmasiPasswordInput(),
             submitButton(),
           ],
         ),

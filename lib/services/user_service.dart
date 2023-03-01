@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:airplane/models/user_model.dart';
+import 'package:airplane/services/base.dart';
+import 'package:airplane/services/token.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' show Client;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   CollectionReference _userReference =
@@ -19,14 +25,19 @@ class UserService {
   }
 
   Future<UserModel> getUserById(String id) async {
+    Client client = Client();
+    var header = await Token.header();
+    print('header${header}');
+    var idUser = int.parse(id);
     try {
-      DocumentSnapshot snapshot = await _userReference.doc(id).get();
+      var url = Uri.parse(BaseUrl().getip() + '/api/v1/users/${idUser}');
+      final response = await client.get(url, headers: header);
+      var res = json.decode(response.body);
+
       return UserModel(
-          id: id,
-          email: snapshot['email'],
-          name: snapshot['name'],
-          hobby: snapshot['hobby'],
-          balance: snapshot['balance']);
+          id: idUser.toString(),
+          email: res['data']['email'],
+          name: res['data']['name']);
     } catch (e) {
       throw e;
     }

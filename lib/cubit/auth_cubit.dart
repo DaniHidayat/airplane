@@ -18,7 +18,8 @@ class AuthCubit extends Cubit<AuthState> {
       );
       emit(AuthSuccess(user));
     } catch (e) {
-      emit(AuthFailed(e.toString()));
+      print('err${e.toString()}');
+      emit(AuthFailed('username atau password salah!'));
     }
   }
 
@@ -26,22 +27,30 @@ class AuthCubit extends Cubit<AuthState> {
       {required String email,
       required String password,
       required String name,
-      String hobby = ''}) async {
+      required String konfirmasiPassword}) async {
     try {
       emit(AuthLoading());
+      if (password == konfirmasiPassword) {
+        UserModel user = await AuthService().signUp(
+            email: email,
+            password: password,
+            name: name,
+            konfirmasiPassword: konfirmasiPassword);
 
-      UserModel user = await AuthService()
-          .signUp(email: email, password: password, name: name, hobby: hobby);
-
-      emit(AuthSuccess(user));
+        emit(AuthSuccess(user));
+      } else {
+        emit(AuthFailed('password tidak sama!'));
+      }
     } catch (e) {
-      emit(AuthFailed(e.toString()));
+      print('eee${e}');
+      emit(AuthFailed('Email Sudah di gunakan!'));
     }
   }
 
   void signOut() async {
     try {
       emit(AuthLoading());
+
       await AuthService().signOut();
       emit(AuthInitial());
     } catch (e) {

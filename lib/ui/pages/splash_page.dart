@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../shared/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -14,19 +16,24 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   @override
-  void initState() {
+  static String token = '';
+  checklogin() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? token = _prefs.getString('token');
+    String? idUser = _prefs.getString('idUser');
     Timer(Duration(seconds: 3), () {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user == null) {
+      if (token == null || token == '') {
         Navigator.pushNamedAndRemoveUntil(
             context, '/get-started', (route) => false);
       } else {
-        print(user.email);
-        context.read<AuthCubit>().getCurrentUser(user.uid);
+        context.read<AuthCubit>().getCurrentUser(idUser.toString());
         Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
       }
     });
+  }
+
+  void initState() {
+    checklogin();
     super.initState();
   }
 

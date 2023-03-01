@@ -11,18 +11,19 @@ class TransactionModel extends Equatable {
   final double vat;
   final int price;
   final int grandTotal;
+  final String idUser;
 
-  TransactionModel({
-    required this.destination,
-    this.id = '',
-    this.amountOfTraveler = 0,
-    this.selectedSeats = '',
-    this.insurance = false,
-    this.refundable = false,
-    this.vat = 0,
-    this.price = 0,
-    this.grandTotal = 0,
-  });
+  TransactionModel(
+      {required this.destination,
+      this.id = '',
+      this.amountOfTraveler = 0,
+      this.selectedSeats = '',
+      this.insurance = false,
+      this.refundable = false,
+      this.vat = 0,
+      this.price = 0,
+      this.grandTotal = 0,
+      this.idUser = ''});
 
   factory TransactionModel.fromJson(String id, Map<String, dynamic> json) =>
       TransactionModel(
@@ -36,6 +37,7 @@ class TransactionModel extends Equatable {
         vat: json['vat'],
         price: json['price'],
         grandTotal: json['grandTotal'],
+        idUser: json['idUser'],
       );
 
   @override
@@ -48,5 +50,6 @@ class TransactionModel extends Equatable {
         vat,
         price,
         grandTotal,
+        idUser,
       ];
 }

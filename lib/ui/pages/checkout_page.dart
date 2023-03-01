@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-
 class CheckoutPage extends StatelessWidget {
   final TransactionModel transaction;
 
@@ -299,7 +298,7 @@ class CheckoutPage extends StatelessWidget {
                                   locale: 'id',
                                   symbol: 'IDR ',
                                   decimalDigits: 0,
-                                ).format(state.user.balance),
+                                ).format(280000000),
                                 style: blackTextStyle.copyWith(
                                   fontSize: 18,
                                   fontWeight: medium,
