@@ -15,7 +15,7 @@ class DestinationService {
               e.id, e.data() as Map<String, dynamic>);
         },
       ).toList();
-
+      print('dani,${destinations}');
       return destinations;
     } catch (e) {
       throw e;

@@ -11,6 +11,9 @@ import 'package:airplane/ui/widgets/destination_tile_skelaton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+import '../widgets/banner_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +23,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentSlide = 0;
+
+  final List<String> _slideItems = [
+    'https://i.postimg.cc/Nfpq3QX7/Screen-Shot-2023-04-04-at-14-22-20.png',
+    'https://i.postimg.cc/9Q6xSkLY/Screen-Shot-2023-03-27-at-21-27-24.png',
+  ];
   @override
   void initState() {
     context.read<DestinationCubit>().fetchDestinations();
@@ -160,6 +169,10 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    Widget bannerSection() {
+      return BannerCard(_slideItems);
+    }
+
     Widget skelatonpopularDestinations() {
       return Container(
         margin: EdgeInsets.only(top: 30),
@@ -265,6 +278,7 @@ class _HomePageState extends State<HomePage> {
           return ListView(
             children: [
               header(),
+              bannerSection(),
               popularDestinations(state.destinations),
               newDestinations(state.destinations)
             ],

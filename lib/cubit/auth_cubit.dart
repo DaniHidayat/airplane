@@ -18,7 +18,6 @@ class AuthCubit extends Cubit<AuthState> {
       );
       emit(AuthSuccess(user));
     } catch (e) {
-      print('err${e.toString()}');
       emit(AuthFailed('username atau password salah!'));
     }
   }
