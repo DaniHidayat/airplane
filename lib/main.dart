@@ -13,6 +13,7 @@ import 'package:airplane/ui/pages/success_checkout_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'cubit/banner_cubit.dart';
 import 'ui/pages/splash_page.dart';
 import 'firebase_options.dart';
 
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => TransactionCubit(),
+        ),
+        BlocProvider(
+          create: (context) => BannerCubit(),
         ),
       ],
       child: MaterialApp(

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class BannerCard extends StatefulWidget {
-  final List _slideItems;
-
+  final List<Map<String, String>> _slideItems;
   const BannerCard(this._slideItems, {Key? key}) : super(key: key);
 
   @override
@@ -36,7 +35,7 @@ class _BannerCardState extends State<BannerCard> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
                     child: Image.network(
-                      item,
+                      item['image']!,
                       fit: BoxFit.cover,
                       height: 200,
                     ),
